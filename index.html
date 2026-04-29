@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>허호필 — 어떤 사람의 이야기</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf8f4;
+    --paper: #fffef9;
+    --ink: #1a1612;
+    --ink-light: #5a5248;
+    --ink-faint: #9a9088;
+    --accent: #8b4513;
+    --accent-light: #c4813a;
+    --rule: #e0d8cc;
+    --quote-bg: #f5f0e8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Serif KR', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── 커버 ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--ink);
+    color: #f5f0e8;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 60%, rgba(139,69,19,0.25) 0%, transparent 70%);
+  }
+  .cover-inner { position: relative; z-index: 1; max-width: 600px; }
+  .cover-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 2.5rem;
+  }
+  .cover-title {
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  .cover-sub {
+    font-size: 1rem;
+    font-weight: 300;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+  .cover-rule {
+    width: 60px;
+    height: 1px;
+    background: var(--accent-light);
+    margin: 0 auto 3rem;
+  }
+  .cover-meta {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(245,240,232,0.4);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .toc-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 2.5rem;
+  }
+  .toc-part { margin-bottom: 2rem; }
+  .toc-part-title {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    font-family: 'Noto Sans KR', sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.3rem 0;
+    border-bottom: 1px dotted var(--rule);
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 0.95rem;
+    transition: color 0.2s;
+  }
+  .toc-item:hover { color: var(--accent); }
+  .toc-num {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+  }
+
+  /* ── 파트 구분 페이지 ── */
+  .part-break {
+    background: var(--ink);
+    color: #f5f0e8;
+    padding: 6rem 2rem;
+    text-align: center;
+    margin: 0;
+  }
+  .part-break-num {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 1.5rem;
+  }
+  .part-break-title {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+  }
+  .part-break-desc {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: rgba(245,240,232,0.55);
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  /* ── 본문 레이아웃 ── */
+  .content-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ── 챕터 ── */
+  .chapter {
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .chapter:last-child { border-bottom: none; }
+
+  .chapter-num {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 1.2rem;
+    display: block;
+  }
+  .chapter-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.02em;
+  }
+  .chapter-lead {
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ── 본문 요소 ── */
+  .body-text {
+    font-size: 1rem;
+    line-height: 2;
+    color: var(--ink);
+    margin-bottom: 1.6rem;
+  }
+
+  .subhead {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 2.8rem 0 1rem;
+    color: var(--ink);
+  }
+
+  /* 풀쿼트 */
+  .pullquote {
+    background: var(--quote-bg);
+    border-left: 3px solid var(--accent);
+    padding: 1.8rem 2rem;
+    margin: 2.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .pullquote p {
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.85;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .pullquote p:last-child { margin-bottom: 0; }
+  .pullquote cite {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    font-style: normal;
+    letter-spacing: 0.05em;
+  }
+
+  /* 결과 뱃지 */
+  .result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.35rem 0.9rem;
+    border-radius: 2px;
+    margin: 0.3rem 0.3rem 0.3rem 0;
+    letter-spacing: 0.05em;
+  }
+
+  /* 에피소드 박스 */
+  .episode-box {
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--accent);
+    padding: 1.8rem 2rem;
+    margin: 2.5rem 0;
+    background: var(--paper);
+  }
+  .episode-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 0.8rem;
+  }
+  .episode-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  /* 인사이트 */
+  .insight {
+    background: var(--ink);
+    color: #f5f0e8;
+    padding: 2rem 2.2rem;
+    margin: 3rem 0;
+    border-radius: 2px;
+  }
+  .insight-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 1rem;
+  }
+  .insight p {
+    font-size: 1rem;
+    line-height: 1.85;
+    font-style: italic;
+    color: rgba(245,240,232,0.9);
+    margin-bottom: 0.8rem;
+  }
+  .insight p:last-child { margin-bottom: 0; }
+
+  /* 수평선 */
+  .section-rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 2.5rem 0;
+  }
+
+  /* 큰 숫자 */
+  .big-stat {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .big-stat-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+
+  /* 팀 구성 리스트 */
+  .team-list {
+    list-style: none;
+    margin: 1rem 0 1.5rem;
+    padding: 0;
+  }
+  .team-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px dotted var(--rule);
+    font-size: 0.95rem;
+    display: flex;
+    gap: 1rem;
+  }
+  .team-list li:last-child { border-bottom: none; }
+  .team-list .role {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    min-width: 80px;
+    padding-top: 0.15rem;
+  }
+
+  /* 푸터 */
+  .footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .footer-rule {
+    width: 40px;
+    height: 1px;
+    background: var(--rule);
+    margin: 0 auto 2rem;
+  }
+  .footer p {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    line-height: 2;
+  }
+
+  /* 반응형 */
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    .content-wrap { padding: 0 1.2rem; }
+    .chapter { padding: 3.5rem 0 3rem; }
+    .pullquote { padding: 1.3rem 1.4rem; }
+    .insight { padding: 1.5rem 1.6rem; }
+  }
+
+  /* 프린트 */
+  @media print {
+    .cover { min-height: auto; page-break-after: always; }
+    .part-break { page-break-before: always; page-break-after: always; }
+    .chapter { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     커버
+══════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-inner">
+    <p class="cover-label">Personal Memoir</p>
+    <h1 class="cover-title">어떤 사람의<br>이야기</h1>
+    <div class="cover-rule"></div>
+    <p class="cover-sub">
+      경남 진주에서 서울로,<br>
+      영화 덕후에서 기획자로,<br>
+      그리고 나를 만든 것들에 대하여.
+    </p>
+    <p class="cover-meta">허호필 · 대학 시절 & GE Korea 편</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     목차
+══════════════════════════════════ -->
+<div class="toc">
+  <p class="toc-label">차례</p>
+
+  <div class="toc-part">
+    <p class="toc-part-title">Part 1 — 대학 시절</p>
+    <a class="toc-item" href="#ch1">
+      <span>영화 덕후, 연세대에 오다</span>
+      <span class="toc-num">1</span>
+    </a>
+    <a class="toc-item" href="#ch2">
+      <span>기대와 현실의 괴리</span>
+      <span class="toc-num">2</span>
+    </a>
+    <a class="toc-item" href="#ch3">
+      <span>군대 — 학점 1.0과 학사경고</span>
+      <span class="toc-num">3</span>
+    </a>
+    <a class="toc-item" href="#ch4">
+      <span>수업에 진심인 사람</span>
+      <span class="toc-num">4</span>
+    </a>
+    <a class="toc-item" href="#ch5">
+      <span>그림판으로 그린 마케팅</span>
+      <span class="toc-num">5</span>
+    </a>
+    <a class="toc-item" href="#ch6">
+      <span>98점과 게시판 공개 칭찬</span>
+      <span class="toc-num">6</span>
+    </a>
+    <a class="toc-item" href="#ch7">
+      <span>돈을 벌어야겠다는 결론</span>
+      <span class="toc-num">7</span>
+    </a>
+  </div>
+
+  <div class="toc-part">
+    <p class="toc-part-title">Part 2 — GE Korea</p>
+    <a class="toc-item" href="#ch8">
+      <span>우연히 들어간 PR팀</span>
+      <span class="toc-num">8</span>
+    </a>
+    <a class="toc-item" href="#ch9">
+      <span>전무님의 첫 번째 호출</span>
+      <span class="toc-num">9</span>
+    </a>
+    <a class="toc-item" href="#ch10">
+      <span>잘해도 보여줄 의무가 있다</span>
+      <span class="toc-num">10</span>
+    </a>
+    <a class="toc-item" href="#ch11">
+      <span>2기 선배의 CD를 보고</span>
+      <span class="toc-num">11</span>
+    </a>
+    <a class="toc-item" href="#ch12">
+      <span>60명의 이름 합창</span>
+      <span class="toc-num">12</span>
+    </a>
+    <a class="toc-item" href="#ch13">
+      <span>졸업식 날 혼자 보낸 점심</span>
+      <span class="toc-num">13</span>
+    </a>
+    <a class="toc-item" href="#ch14">
+      <span>존재로 남기</span>
+      <span class="toc-num">14</span>
+    </a>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PART 1
+══════════════════════════════════ -->
+<div class="part-break">
+  <p class="part-break-num">Part One</p>
+  <h2 class="part-break-title">대학 시절</h2>
+  <p class="part-break-desc">연세대 신문방송학과, 2005–2011</p>
+</div>
+
+<div class="content-wrap">
+
+  <!-- 챕터 1 -->
+  <div class="chapter" id="ch1">
+    <span class="chapter-num">Chapter 01</span>
+    <h2 class="chapter-title">영화 덕후, 연세대에 오다</h2>
+    <p class="chapter-lead">진주 → 서울, 700편의 영화, 그리고 막연한 꿈</p>
+
+    <p class="body-text">
+      경남 진주 출신이다. 영화를 좋아했는데 지방이라 선택지가 없었다. 그냥 혼자 영화만 보는 학생이었다.
+      "영화 만들고 싶다" 정도의 막연한 꿈. 야간 자율학습이 끝나고 집에 오면 CD에 영화를 구워 저장했다.
+      그렇게 모은 게 <strong>약 700편</strong>이다.
+    </p>
+
+    <p class="body-text">
+      공부를 싫어하지도 않았다. 재밌기도 했다. 영화와 공부를 병행하던 시절,
+      연세대 신문방송학과라면 영화를 배울 수 있을 것 같았다.
+      사회계열로 입학해 2학년 때 과 배정을 받았다.
+    </p>
+
+    <div class="insight">
+      <p class="insight-label">이 시절의 본질</p>
+      <p>하고 싶은 게 생기면 어떻게든 방법을 찾는다. 환경이 안 돼도 700편을 모은 사람이다.</p>
+    </div>
+  </div>
+
+  <!-- 챕터 2 -->
+  <div class="chapter" id="ch2">
+    <span class="chapter-num">Chapter 02</span>
+    <h2 class="chapter-title">기대와 현실의 괴리</h2>
+    <p class="chapter-lead">영화예술이 아닌 방송제작, 그리고 진로의 안갯속</p>
+
+    <p class="body-text">
+      영화 관련 수업은 다 들었다. 그런데 신방과의 실질적인 커리큘럼은 방송제작 중심이었다.
+      내가 원하던 영화예술 쪽은 깊이 배울 수 없었다. 실망이 컸다.
+    </p>
+
+    <p class="body-text">
+      주변에서는 성격을 보고 이렇게들 했다. "너는 예능PD 하겠다", "시사PD 하겠다."
+      그런데 결국 그 길은 가지 않았다.
+    </p>
+
+    <div class="pullquote">
+      <p>남들이 "너 이거 할 것 같다"는 말이 꼭 맞는 게 아니다. 본인이 뭘 원하는지가 먼저다.</p>
+    </div>
+  </div>
+
+  <!-- 챕터 3 -->
+  <div class="chapter" id="ch3">
+    <span class="chapter-num">Chapter 03</span>
+    <h2 class="chapter-title">군대 — 학점 1.0과 학사경고</h2>
+    <p class="chapter-lead">완벽한 스펙이 아니어도 괜찮다는 것</p>
+
+    <p class="body-text">
+      군대에서 연애에 빠졌다. 제대 전 학점이 1.0이었다. 학사경고를 받았다.
+      특별히 숨기고 싶은 이야기도 아니다. 그냥 그랬다.
+    </p>
+
+    <p class="body-text">
+      제대 후 본격적으로 수업에 집중했다.
+      중요한 건 어느 시점에 방향을 잡았느냐였다.
+    </p>
+  </div>
+
+  <!-- 챕터 4 -->
+  <div class="chapter" id="ch4">
+    <span class="chapter-num">Chapter 04</span>
+    <h2 class="chapter-title">수업에 진심인 사람</h2>
+    <p class="chapter-lead">스펙용 외부활동보다 수업 한 편에 진심을 쏟기로</p>
+
+    <p class="body-text">
+      수업을 대충 들으면서 외부활동만 챙기는 학생들을 이해하지 못했다. 조별활동도 대충 하면서
+      이력서에 쓸 것만 모으는 방식이 납득이 안 됐다.
+      전략동아리 같은 것도 생각해봤지만 진지하지 않은 분위기라 안 했다. 영화 동아리를 했다.
+    </p>
+
+    <p class="body-text">
+      봉사활동을 학점 연계로 한 번 해봤는데 — 초등 1, 2학년 방과후 수학, 자폐 친구도 있었다 —
+      진심으로 했더니 아이들이 엄청 좋아해줬다.
+      방학 끝나고 나가게 되자 아이들이 서운해했다는 얘기를 들었다.
+    </p>
+
+    <div class="pullquote">
+      <p>애매하게 할 거면 하지 말자.</p>
+    </div>
+
+    <p class="body-text">
+      이 생각이 그때 생겼다. 그리고 이후의 모든 선택에 적용됐다.
+    </p>
+
+    <hr class="section-rule">
+
+    <p class="subhead">글쓰기 수업과 교수님의 한마디</p>
+
+    <p class="body-text">
+      1학년 교양 글쓰기 수업. 소설도 쓰시는 유광수 교수님. 되바라진 의견도 내고 적극적으로
+      참여했다. 학점은 B+. 기말고사 시험지를 제출하고 나가려는데 교수님이 작은 목소리로 말했다.
+    </p>
+
+    <div class="pullquote">
+      <p>"허호필 씨는 뭘 하든 성공하실 거예요."</p>
+      <cite>유광수 교수 · 글쓰기 수업 기말고사일</cite>
+    </div>
+
+    <p class="body-text">
+      이유는 모르겠지만 그 말이 계속 기억에 남았다. 그 이후 그 말을 되새기며
+      스스로 그런 이유가 있는 사람이라고 믿으려 했다. 셀프 합리화이기도 하고,
+      그랬으면 좋겠다는 두려움이기도 했다.
+    </p>
+
+    <hr class="section-rule">
+
+    <p class="subhead">영화예술의 이해</p>
+
+    <p class="body-text">
+      서울대 미학과 출신 교수. 타르코프스키 같은 걸 다루는 형이상학적·종교학적 분석 수업.
+      첫 시간이 &lt;안녕 히로시마&gt;였다. 졸릴 수 있는 수업인데 맨 앞에서 눈 치켜뜨고 들었다.
+    </p>
+
+    <div class="result-badge">🏅 전체 학기 1등</div>
+
+    <p class="body-text" style="margin-top:1rem;">
+      조교가 대체로 출석을 부를 정도로 인상에 남은 학생이었다.
+    </p>
+  </div>
+
+  <!-- 챕터 5 -->
+  <div class="chapter" id="ch5">
+    <span class="chapter-num">Chapter 05</span>
+    <h2 class="chapter-title">그림판으로 그린 마케팅</h2>
+    <p class="chapter-lead">삼성증권 마케팅 커뮤니케이션 캠페인 수업 이야기</p>
+
+    <p class="body-text">
+      산학협력 수업이었다. 삼성증권 모바일 솔루션 홍보 과제. 총 8개 조, 조당 약 6명.
+    </p>
+
+    <p class="subhead">처음부터 삐걱거린 팀</p>
+
+    <ul class="team-list">
+      <li><span class="role">경영학과 형</span><span>시작하자마자 LG전자 취업 — 조별 프로젝트 안 하겠다고 선언</span></li>
+      <li><span class="role">일본인 유학생</span><span>생활고로 알바 필요 — 조별 모임 불가, 시킬 것만 겨우 하겠다고</span></li>
+      <li><span class="role">중국인 유학생</span><span>한국말을 거의 못해 소통 자체 불가</span></li>
+      <li><span class="role">실질 멤버</span><span>나 + 신방과 후배 + 국문과 형, 총 3명</span></li>
+    </ul>
+
+    <p class="body-text">
+      성격상 이름 빼는 스타일이 아니다. 우려하는 건 하나였다 — 하겠다고 해놓고 대충 줘서
+      전체 퀄리티를 떨어뜨리는 것. 그럴 거면 처음부터 빠지고 내가 하는 게 낫다.
+    </p>
+
+    <p class="subhead">3명이 서울 광화문·고속터미널·서울역을 나눠서</p>
+
+    <p class="body-text">
+      지나가는 직장인들을 붙잡아 설문지를 각자 100장씩 직접 돌렸다.
+      진짜 힘들었다. 후배 지인을 통해 삼성증권 본사 담당자를 직접 만나서 치킨을 먹으며
+      실질 의견을 들었다. 정량(설문) + 정성(인터뷰)을 병행했다.
+    </p>
+
+    <div class="result-badge">🥇 중간고사 8개 조 중 1등</div>
+
+    <p class="body-text" style="margin-top:1rem;">
+      삼성증권 담당 과장도 기대된다는 피드백을 줬다.
+    </p>
+
+    <p class="subhead">기말고사 — 그림판의 배신</p>
+
+    <p class="body-text">
+      크리에이티브 산출물이 문제였다. 포토샵을 돈 주고 샀는데 올가미 도구 같은 게
+      잘 안 됐다. 결국 마우스로 그림판에 그린 게 최종 산출물에 쓰였다. 셋 다 울고 싶었다.
+    </p>
+
+    <p class="body-text">
+      팀 내 갈등도 있었다. 나는 큰 그림을 먼저 잡고 가자는 스타일,
+      여자 후배는 아이디어가 있으면 최종 프로그램부터 짜도 된다는 스타일.
+      둘이 계속 부딪혔다. 국문과 형은 듣고만 있었다.
+    </p>
+
+    <p class="body-text">
+      발표 후 삼성증권 사람들과 회식 자리에서 셋이 부둥켜 안고 울었다. 교수님도 울었다.
+      그 자리에서 삼성 과장이 조용히 말했다.
+    </p>
+
+    <div class="pullquote">
+      <p>"나는 1등 줬다."</p>
+      <cite>삼성증권 담당 과장 · 회식 자리에서</cite>
+    </div>
+
+    <p class="body-text">
+      공식 순위는 뒤에서 2등이었다. 그 말이 없었으면 꼴찌였을 거라는 뜻이기도 했다.
+      수업 끝나고 교수님을 찾아갔더니 "안쓰러웠다, 고생했다"고 했다.
+    </p>
+
+    <div class="result-badge">📊 최종 학점: A0</div>
+    <div class="result-badge">📊 후배 학점: A-</div>
+
+    <div class="insight">
+      <p class="insight-label">이 에피소드의 핵심</p>
+      <p>전략과 실행력만으로 중간 1등. 하지만 크리에이티브 제작 능력 부족으로 기말 꼴찌에서 2등. 아이디어와 전략만으로는 부족하다는 걸 몸으로 배웠다. 그리고 진심으로 했을 때 생기는 감정 — 셋이 울며 회식하는 장면은 스펙용으로 껍데기만 채운 팀에선 절대 나오지 않는다.</p>
+    </div>
+  </div>
+
+  <!-- 챕터 6 -->
+  <div class="chapter" id="ch6">
+    <span class="chapter-num">Chapter 06</span>
+    <h2 class="chapter-title">98점과 게시판 공개 칭찬</h2>
+    <p class="chapter-lead">PR기획실습 수업, 광주 유니버시아드 과제</p>
+
+    <p class="body-text">
+      광주 유니버시아드 홍보 과제. 담당자들이 와서 미션을 부여하고 평가하는 수업이었다.
+      이번에도 "우리 집 가자" 신공을 발동했다. 5명을 자취방으로 데려와 밤을 샜다.
+    </p>
+
+    <ul class="team-list">
+      <li><span class="role">새벽 4시</span><span>한 명은 부모님이 찾는 바람에 택시 태워 보냄</span></li>
+      <li><span class="role">30분 경계</span><span>잔다고 할 때 옆에서 지키고 있다가 직접 깨움</span></li>
+    </ul>
+
+    <div class="result-badge">🥈 최종 결과: 2등</div>
+
+    <p class="body-text" style="margin-top:1rem;">
+      그런데 수업 게시판에 뜬 것이 있었다. 중간고사 채점 중 박노일 교수님이 올린 글이었다.
+    </p>
+
+    <div class="pullquote">
+      <p>
+        "특별히 칭찬해 주고 싶은 학생이 있습니다. 허호필 학생 매우 잘 했습니다.
+        하나하나 읽줄 그으면서 excellent 코멘트를 줄 밖에 없었습니다.
+        지금까지 허호필 학생에게 최고 점수는 98을 줬습니다. P.S. Until now, 최하점수 71."
+      </p>
+      <cite>박노일 교수 · 수업 게시판 공개 게시 (2010.10.29)</cite>
+    </div>
+
+    <p class="body-text">
+      수업 게시판에 공개로 올라와서 애들이 엄청 놀렸다고 한다.
+      그게 오히려 빠르게 올라오는 걸 보고 본인도 조심스러웠던 기억이 있다.
+    </p>
+
+    <div class="insight">
+      <p class="insight-label">끝 그림</p>
+      <p>머릿속에 그림이 보이면 어떻게든 만들어내야 한다. 영화감독이 머릿속 장면을 어떻게든 찍으려는 것과 같은 맥락이다. 크리에이티브가 들어가는 영역은 효율만이 답이 아니다. 라스트 1마일, 그 마지막 터치가 마음에 드는 것 — 그게 중요하다.</p>
+    </div>
+  </div>
+
+  <!-- 챕터 7 -->
+  <div class="chapter" id="ch7">
+    <span class="chapter-num">Chapter 07</span>
+    <h2 class="chapter-title">돈을 벌어야겠다는 결론</h2>
+    <p class="chapter-lead">취업 결심 — 현실과의 타협이 아닌 선택</p>
+
+    <p class="body-text">
+      경남 진주 출신. 부모님은 평범한 공무원. 누나도 서울에서 대학을 다니고 있었다.
+      석사를 하거나 영화 공부를 더 하기엔 현실적으로 어렵다고 스스로 판단했다.
+    </p>
+
+    <p class="body-text">
+      PD를 해야 하나, 취업을 해야 하나. 한동안 고민했다.
+      그리고 결론은 단순했다.
+    </p>
+
+    <div class="pullquote">
+      <p>돈을 벌어야겠다.</p>
+    </div>
+
+    <p class="body-text">
+      환경 때문에 포기한 게 아니었다. 스스로 판단하고 선택한 것이었다.
+      그 선택을 어떻게 의미 있게 만드느냐가 다음 과제였다.
+    </p>
+  </div>
+
+</div><!-- /content-wrap Part 1 -->
+
+
+<!-- ══════════════════════════════════
+     PART 2
+══════════════════════════════════ -->
+<div class="part-break">
+  <p class="part-break-num">Part Two</p>
+  <h2 class="part-break-title">GE Korea</h2>
+  <p class="part-break-desc">PR팀 인턴 · 2011 · 6개월</p>
+</div>
+
+<div class="content-wrap">
+
+  <!-- 챕터 8 -->
+  <div class="chapter" id="ch8">
+    <span class="chapter-num">Chapter 08</span>
+    <h2 class="chapter-title">우연히 들어간 PR팀</h2>
+    <p class="chapter-lead">사이버커뮤니케이션 학회 → GE Korea</p>
+
+    <p class="body-text">
+      신방과 교수님이 고문인 사이버커뮤니케이션 학회에 가입했다.
+      처음 관심의 출발은 사회심리학이었다. 온라인 배틀, 남의 시선에 따라 달라지는 행동,
+      사이비종교 같은 동조 현상 — 카페 댓글의 첫댓글 효과처럼, 첫 사람이 주도하면
+      거기를 따라가는 현상 같은 게 재미있었다.
+    </p>
+
+    <p class="body-text">
+      당시 트위터가 막 등장하던 시점이었다. 세상이 어떻게 될지 궁금해서 들어갔다.
+      트위터 내 파워트윗터리안 분석, 페이스북 정치적 파티 현상 같은 걸 연구했다.
+    </p>
+
+    <p class="body-text">
+      그러다 학회에서 만난 후배가 먼저 GE Korea 인턴을 하게 됐다. TO가 하나 늘어나자
+      갑자기 연락이 왔다. 후배의 추천으로 GE Korea PR팀 인턴에 지원해 합격했다.
+    </p>
+
+    <div class="episode-box">
+      <p class="episode-label">GE Korea PR팀 구조</p>
+      <p class="episode-title">전무님 + 차장님 + 인턴 2명</p>
+      <ul class="team-list">
+        <li><span class="role">소속</span><span>사장님과 같은 층, 백오피스 총괄</span></li>
+        <li><span class="role">인턴 기수</span><span>3기 — 원래 1명씩 뽑다가 블로그·영상편집 필요로 이번에 2명</span></li>
+        <li><span class="role">전체 인턴</span><span>약 60명 (개발, HR 등 다양)</span></li>
+        <li><span class="role">기간</span><span>6개월</span></li>
+      </ul>
+    </div>
+
+    <p class="body-text">
+      주요 업무는 홈페이지 담당, 블로그 개설, 사내 레터 기획 및 제작(인터뷰 포함),
+      PR 에이전시와 컨퍼런스콜 정기 참여, 아시아 퍼시픽 연결 업무였다.
+    </p>
+
+    <div class="insight">
+      <p class="insight-label">커리어에 대해</p>
+      <p>중요한 연결은 릴레이션십에서 오는 경우가 많다. 스펙으로 취업한 게 아니라 진심으로 참여한 학회 활동이 커리어의 첫 문을 열어줬다.</p>
+    </div>
+  </div>
+
+  <!-- 챕터 9 -->
+  <div class="chapter" id="ch9">
+    <span class="chapter-num">Chapter 09</span>
+    <h2 class="chapter-title">전무님의 첫 번째 호출</h2>
+    <p class="chapter-lead">겸손과 비겁함의 차이</p>
+
+    <p class="body-text">
+      전무님은 부산 출신, 연대 신방과 선배였다. 어느 날 따로 호출이 왔다.
+    </p>
+
+    <div class="pullquote">
+      <p>
+        "하고 싶은 말은 많은데 뭔가 말하면 안 될 거 같고 분위기 봐서 안 하는 거 같은데,
+        여기서는 그러면 안 돼. 한국 회사는 겸손해야 하지만, 여긴 외국계고,
+        여기서 일하는 사람들은 네가 인턴인지 뭔지 관심 없어.
+        컨퍼런스콜에 누가 들어왔다고 다 떠 있는데 한마디도 안 하면 그 사람은 바보라고 생각하고,
+        그게 반복되면 그 사람 들어오지 말라고 해."
+      </p>
+      <cite>GE Korea 전무님 · 첫 번째 호출</cite>
+    </div>
+
+    <p class="body-text">
+      충격이었지만 기분은 좋았다. 원래 먼저 나서지 않으려고 노력하는 성향이었다.
+      초중고 내내 반장을 한 번도 안 한 이유가 "나대는 것 같아서"였다.
+      에너지와 문제의식은 있는데 앞에 안 서는 — 스스로 돌아보면 약간 비겁한 방식이었다.
+      경상도 출신이라 오글거리거나 나댄다는 느낌이 더 싫었던 것도 있었다.
+    </p>
+
+    <p class="body-text">
+      그 이후부터는 컨퍼런스콜 전에 반드시 준비했다. 참석자가 누구인지, 어떤 사람인지 파악.
+      회의 목적 미리 파악. 뭐라도 한마디 할 거리를 영어로도 준비.
+    </p>
+
+    <p class="body-text">점차 역할도 늘어나기 시작했다.</p>
+  </div>
+
+  <!-- 챕터 10 -->
+  <div class="chapter" id="ch10">
+    <span class="chapter-num">Chapter 10</span>
+    <h2 class="chapter-title">잘해도 보여줄 의무가 있다</h2>
+    <p class="chapter-lead">전무님의 두 번째 호출, 그리고 프레젠테이션 대회</p>
+
+    <p class="body-text">
+      매달 인턴들 사이에서 개인 또는 조별 과제 발표 컴피티션이 열렸다.
+      첫 번째 과제는 3분 프레젠테이션 대회였다. 10명만 신청받는 방식.
+    </p>
+
+    <p class="body-text">
+      나갈지 말지 고민하는 게 전무님 귀에 들어갔다. 또 호출이 왔다.
+    </p>
+
+    <div class="pullquote">
+      <p>
+        "네가 못해도 나가서 성장해야 하지만, 네가 잘해도 나가서 사람들에게 보여줄 의무가 있는 거다.
+        그러니까 나가라. 나가서 엄청 잘해서 사람들이 '아, 저런 사람도 있구나, 저렇게도 하는구나'
+        하고 보여줘야지. 네가 그거 부끄럽다고, 나대는 것 같다고 안 하면 저들이 인턴하는 의미도 퇴색된다.
+        가서 최대한 잘하고 와라. 이후에도 모든 컴피티션은 다 참가해라."
+      </p>
+      <cite>GE Korea 전무님 · 두 번째 호출</cite>
+    </div>
+
+    <div class="result-badge">🏆 압도적 1등</div>
+
+    <p class="body-text" style="margin-top:1rem;">
+      평가지도 직접 받아봤다. PPT도 잘 만들었고 발표도 잘했다.
+    </p>
+
+    <p class="body-text">
+      발표 후 헬스케어 개발자인 동갑내기가 다가왔다. 안 친하던 사이였는데.
+      "뭘 보고 공부했냐"며 자기가 읽는 책을 보여줬다.
+      표정이 너무 밝았다. 미워할 거라 생각했는데 오히려 반대였다.
+    </p>
+
+    <div class="pullquote">
+      <p>"누군가에게 지침이 되고 도움이 된다는 게 너무 기분이 좋았어."</p>
+    </div>
+
+    <p class="body-text">
+      이 감각이 지금도 남아 있다.
+    </p>
+
+    <p class="body-text">
+      이후 조별 활동도 전부 참가했다. 우리 조는 모든 컴피티션에서 1등을 했다.
+    </p>
+  </div>
+
+  <!-- 챕터 11 -->
+  <div class="chapter" id="ch11">
+    <span class="chapter-num">Chapter 11</span>
+    <h2 class="chapter-title">2기 선배의 CD를 보고</h2>
+    <p class="chapter-lead">6개월 대장정 프로젝트 — DVD 기획</p>
+
+    <p class="body-text">
+      인턴 6개월짜리 대장정 프로젝트. 뉴스레터 팀과 영상 팀 중 선택이었다.
+      대충 할 사람들만 올 것 같은 영상 팀을 오히려 선택했다. "대충 안 할 거다" 선언하고 시작했다.
+    </p>
+
+    <p class="subhead">기획의 출발점</p>
+
+    <p class="body-text">
+      2기 선배에게서 받은 영상 CD를 봤다. 음악 깔린 슬라이드쇼였다. 하루면 만들 수 있는 것.
+    </p>
+
+    <div class="pullquote">
+      <p>
+        "내가 한 6개월짜리 프로젝트가 이렇게 남는다고? 받아들일 수 없었어.
+        4기가 내 걸 보고 내가 2기 선배를 보며 느낀 실망감을 느낀다면? 참을 수가 없었어."
+      </p>
+    </div>
+
+    <p class="body-text">이 생각 하나가 6개월 프로젝트를 결정하는 동력이 됐다.</p>
+
+    <p class="subhead">목표 설정 — 이 순서로 생각했다</p>
+
+    <p class="body-text">
+      <strong>1.</strong> 마지막에 CD를 나눠주면 60명 중 한 명도 버리게 하지 말자.<br>
+      <strong>2.</strong> 버리지 않으려면? 자기가 나와야 한다 — 엑스트라 말고 의미 있게.<br>
+      <strong>3.</strong> 그래서: <strong>층별 그룹 편집</strong> — 영상이 가다가 멈추면서 흑백으로 바뀌며 이름+부서가 자막으로 등장. 60명 모두 한 컷씩 주목받게.<br>
+      <strong>4.</strong> <strong>커버 디자인</strong>: 60명을 전부 누끼 따서 한 장에 집어넣음.
+    </p>
+
+    <div class="episode-box">
+      <p class="episode-label">영상 구성</p>
+      <p class="episode-title">URP — You are Proactive</p>
+      <ul class="team-list">
+        <li><span class="role">앞 부분</span><span>60명을 층별(사업부 + 펑션)로 소개. 흑백 전환 + 이름 자막</span></li>
+        <li><span class="role">뒷 부분</span><span>월별 활동 소개 (봉사활동, 외부활동 등)</span></li>
+        <li><span class="role">컨셉</span><span>U·R·P = You are Proactive, Pretty 등 형용사로 활동 소개</span></li>
+        <li><span class="role">방식</span><span>슬라이드쇼 아닌 스토리를 넣어서 연출</span></li>
+      </ul>
+    </div>
+
+    <p class="body-text">
+      프리미어를 다룰 줄 아는 사람이 없어서 편집은 전부 혼자였다.
+      층별 컨셉, 음악 선정, 촬영까지. 빡셌다.
+    </p>
+  </div>
+
+  <!-- 챕터 12 -->
+  <div class="chapter" id="ch12">
+    <span class="chapter-num">Chapter 12</span>
+    <h2 class="chapter-title">60명의 이름 합창</h2>
+    <p class="chapter-lead">Best URP 단독 수상</p>
+
+    <p class="body-text">
+      1기, 2기 때는 MVP·Best URP를 2명씩 뽑았다. 이번엔 2등과 차이가 너무 크고
+      모두가 아니까 <strong>혼자 뽑혔다.</strong>
+    </p>
+
+    <p class="body-text">
+      수료식 날, 전무님이 Best URP 수상자를 발표하면서 말했다.
+      "누군지 다 같이 불러보자." 60명이 허호필 세 글자를 합창했다.
+    </p>
+
+    <div class="pullquote">
+      <p>나름 감동이었다.</p>
+    </div>
+
+    <p class="subhead">원맨쇼의 한계 — 그날 얻은 가장 큰 깨달음</p>
+
+    <p class="body-text">
+      혼자 다 해서 인정을 독차지했다. 좋긴 했다. 그런데 문득 이런 생각이 들었다.
+    </p>
+
+    <div class="pullquote">
+      <p>
+        "나 홀로 영광을 다 차지하고 좋긴 했는데... 나는 원래 80 능력인데 이 프로젝트 하면서
+        90이 됐어. 팀원들은 원래 20인데 20이거나 25야. 혹은 나 때문에 의욕을 잃어서,
+        다음에 30·40이 될 기회가 와도 '안 한다'고 할 수 있어.<br><br>
+        반대로, 내가 80인데 50만 했다면? 나는 85이거나 80에 머물러.
+        하지만 20인 애들 3명이 각각 10씩 올랐어. 전체 성장량은 후자가 커.
+        그때 얻은 재미나 자신감으로 30에서 40, 50 갔을지도 몰라."
+      </p>
+    </div>
+
+    <div class="insight">
+      <p class="insight-label">결론</p>
+      <p>내가 과욕을 부린 것 같았어. 다음 인턴, 다음 일이 있게 되면 조금 물러서 있자. — 실제로 현대카드 인턴 때 발표자를 넘겼더니, 나보다 더 잘하는 걸 발견했다. 약간 서운한 감도 있었지만 기분은 좋았다.</p>
+    </div>
+
+    <p class="subhead">GE가 만들어낸 변화</p>
+
+    <div class="pullquote">
+      <p>
+        "속으로만 스스로 잘났다고 하며 뒤에서 팔짱 끼고 투덜거리던 놈에서,
+        날 미워하거나 질투하거나 싫어할지 몰라도 자신감 있게 손들고 더 열심히 하는 나로 바뀐 거지.
+        완전한 변화야."
+      </p>
+    </div>
+  </div>
+
+  <!-- 챕터 13 -->
+  <div class="chapter" id="ch13">
+    <span class="chapter-num">Chapter 13</span>
+    <h2 class="chapter-title">졸업식 날 혼자 보낸 점심</h2>
+    <p class="chapter-lead">가장 인기 많아 보이는 사람의 내면</p>
+
+    <p class="body-text">
+      Best URP를 받고, 다들 축하 파티하고 졸업장 받고 사진 찍느라 난리도 아니었다.
+      그리고 자리에 돌아왔더니 팀원들도 없고 혼자였다. 밥은 먹었는지도 기억이 잘 안 난다.
+    </p>
+
+    <p class="body-text">
+      나중에 알고 보니 팀원들은 내가 당연히 친한 친구들이랑 밥 먹으러 갈 거라고 생각했고,
+      친구들은 내가 팀원들이랑 갈 거라고 생각했던 것이었다.
+    </p>
+
+    <div class="pullquote">
+      <p>"호필님 어차피 늘 친구 많잖아요, 바쁘잖아요, 인기 많잖아요."</p>
+    </div>
+
+    <p class="body-text">
+      근데 난 늘 혼자다. 먼저 연락을 잘 안 하거든. 말이 많고 웃기고 리더십도 있어 보이니까
+      다들 나는 늘 누군가랑 친할 거라고 생각한다. 대학 때도 그랬고, 회사에서도 그랬고, 지금도 그래.
+    </p>
+
+    <p class="body-text">
+      그땐 좀 슬프고 외로웠다. 이젠 뭐 그런 건 별 감정 없다. 혼자가 결국 좀 낫긴 하거든.
+    </p>
+  </div>
+
+  <!-- 챕터 14 -->
+  <div class="chapter" id="ch14">
+    <span class="chapter-num">Chapter 14</span>
+    <h2 class="chapter-title">존재로 남기</h2>
+    <p class="chapter-lead">인생 행복론</p>
+
+    <p class="body-text">
+      어릴 때의 욕망은 명예로워지는 것이었다. 허호필이라는 이름으로 책이 남거나 음반이 남거나.
+      작가, 감독, 그런 것들.
+    </p>
+
+    <p class="body-text">
+      GE 인턴을 거치면서 그게 조금씩 바뀌기 시작했다.
+    </p>
+
+    <div class="pullquote">
+      <p>
+        "날 기억하지는 못하더라도 내가 준 영향이 남아있다면?
+        그게 하나의 작은 씨앗이 되어서 더 긍정적인 것들이 커지게 한다면?"
+      </p>
+    </div>
+
+    <p class="body-text">
+      멘토링이나 과외가 좋은 이유는 변화가 보이기 때문이다.
+      적어도 이 사람은 내가 인생의 상승 각도를 높게, 혹은 넓게 만든 것 같다는 기분. 그게 행복하다.
+    </p>
+
+    <p class="body-text">
+      날 기억해주면 좋겠지만, 그건 욕심이고 집착 같아서 오히려 무서워서 싫다.
+    </p>
+
+    <div class="pullquote">
+      <p>
+        "날 기억하지 못해도 된다 정도가 아니라, 애초에 나 덕분에 좋은 영향을 받은 것도
+        몰라도 괜찮을 것 같아. 그냥 아무튼 나의 존재로 뭔가 나아진 거였다면,
+        내가 있었다가 없어진 게 아무렇지도 않은 일이 아니라는 게...
+        내 인생에 가장 중요한 지침이라고 생각해. 지금도 그래."
+      </p>
+    </div>
+
+    <p class="body-text">
+      완성된 답이 아니다. 계속 갱신되는 지침이다.
+    </p>
+  </div>
+
+</div><!-- /content-wrap Part 2 -->
+
+<!-- 푸터 -->
+<div class="footer">
+  <div class="footer-rule"></div>
+  <p>
+    대학 시절 & GE Korea 편<br>
+    2005 — 2011<br><br>
+    현대카드 인턴 이후 커리어 편은 추후 이어집니다.
+  </p>
+</div>
+
+</body>
+</html>
